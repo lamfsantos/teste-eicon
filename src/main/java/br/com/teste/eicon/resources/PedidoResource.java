@@ -10,6 +10,7 @@ import java.util.List;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -27,7 +28,7 @@ public class PedidoResource {
 	@Autowired
 	private PedidoService service;
 
-	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
+	@RequestMapping(value = "/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_XML_VALUE)
 	public ResponseEntity<Pedido> find(@PathVariable Integer id) {
 		Pedido pedido = service.findExternal(id);
 		return ResponseEntity.ok().body(pedido);
@@ -39,7 +40,7 @@ public class PedidoResource {
 			@Valid @RequestBody List<Pedido> pedidos) {
 		List<String> response = new ArrayList<String>();
 
-		if(pedidos.size()>1 && pedidos.size()<10) {
+		if(pedidos.size()>=1 && pedidos.size()<=10) {
 			for (Pedido pedido : pedidos) {
 				if (service.find(pedido.getNumeroControle()) == null) {
 
@@ -79,7 +80,7 @@ public class PedidoResource {
 		return ResponseEntity.ok().body(response);
 	}
 
-	@RequestMapping(method = RequestMethod.GET)
+	@RequestMapping(method = RequestMethod.GET, produces = MediaType.APPLICATION_XML_VALUE)
 	public ResponseEntity<List<Pedido>> findAll() {
 		List<Pedido> list = service.findAll();
 		return ResponseEntity.ok().body(list);
