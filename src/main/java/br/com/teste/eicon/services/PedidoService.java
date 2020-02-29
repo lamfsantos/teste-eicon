@@ -15,9 +15,14 @@ public class PedidoService {
 	private PedidoRepository repo;
 
 	public Pedido find(Integer id) {
-		Optional<Pedido> categoria = repo.findById(id);
-		return categoria.orElseThrow(() -> new br.com.teste.eicon.services.exceptions.ObjectNotFoundException(
-				"Objeto não encontrado! Id: " + id + " Tipo: " + Pedido.class.getName()));
+		Optional<Pedido> pedido = repo.findById(id);
+		return pedido.orElse(null);
+	}
+	
+	public Pedido findExternal(Integer id) {
+		Optional<Pedido> pedido = repo.findById(id);
+		return pedido.orElseThrow(() -> new br.com.teste.eicon.services.exceptions.
+				ObjectNotFoundException("Objeto não encontrado! Id: " + id + " Tipo: " + Pedido.class.getName()));
 	}
 
 	public Pedido insert(Pedido obj) {

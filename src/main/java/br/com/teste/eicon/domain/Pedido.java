@@ -1,10 +1,6 @@
 package br.com.teste.eicon.domain;
 
 import java.io.Serializable;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -30,6 +26,8 @@ public class Pedido implements Serializable {
 	private String dataCadastro;
 	private Integer quantidade;
 
+	private Double valorTotalDoPedido;
+
 	public Pedido() {
 	}
 
@@ -37,15 +35,7 @@ public class Pedido implements Serializable {
 			Integer codigoCliente) {
 		super();
 		this.numeroControle = numeroControle;
-
-		if (dataCadastro == null) {
-			Date date = Calendar.getInstance().getTime();
-			DateFormat dateFormat = new SimpleDateFormat("dd-mm-yyyy");
-			this.dataCadastro = dateFormat.format(date);
-		} else {
-			this.dataCadastro = dataCadastro;
-		}
-
+		this.dataCadastro = dataCadastro;
 		this.nome = nome;
 		this.valor = valor;
 		this.quantidade = (quantidade == null) ? 1 : quantidade;
@@ -100,6 +90,14 @@ public class Pedido implements Serializable {
 		this.codigoCliente = codigoCliente;
 	}
 
+	public Double getValorTotalDoPedido() {
+		return valorTotalDoPedido;
+	}
+
+	public void setValorTotalDoPedido(Double valorTotalDoPedido) {
+		this.valorTotalDoPedido = valorTotalDoPedido;
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -123,6 +121,13 @@ public class Pedido implements Serializable {
 		} else if (!numeroControle.equals(other.numeroControle))
 			return false;
 		return true;
+	}
+
+	@Override
+	public String toString() {
+		return "[Numero de Controle = " + this.numeroControle + ", Data de Cadastro = " + this.dataCadastro
+				+ ", Nome = " + this.nome + ", Valor = " + this.valor + ", Quantidade = " + this.quantidade
+				+ ", Código do Cliente = " + this.codigoCliente + "]";
 	}
 
 }
