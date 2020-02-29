@@ -24,12 +24,20 @@ import br.com.teste.eicon.services.PedidoService;
 
 @RestController
 @RequestMapping(value = "/pedidos")
-public class PedidoResource {
+public class PedidoResourceJson {
 	@Autowired
 	private PedidoService service;
 
-	@RequestMapping(value = "/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_XML_VALUE)
-	public ResponseEntity<Pedido> find(@PathVariable Integer id) {
+	@RequestMapping(value = "/json/{id}") 
+	@ResponseBody
+	public ResponseEntity<Pedido> findJson(@PathVariable Integer id) {
+		Pedido pedido = service.findExternal(id);
+		return ResponseEntity.ok().body(pedido);
+	}
+	
+	@RequestMapping(value = "/xml/{id}", produces = MediaType.APPLICATION_XML_VALUE) 
+	@ResponseBody
+	public ResponseEntity<Pedido> findXml(@PathVariable Integer id) {
 		Pedido pedido = service.findExternal(id);
 		return ResponseEntity.ok().body(pedido);
 	}
@@ -79,11 +87,17 @@ public class PedidoResource {
 		
 		return ResponseEntity.ok().body(response);
 	}
-
-	@RequestMapping(method = RequestMethod.GET, produces = MediaType.APPLICATION_XML_VALUE)
-	public ResponseEntity<List<Pedido>> findAll() {
+	
+	@RequestMapping(value = "/json", method = RequestMethod.GET)
+	public ResponseEntity<List<Pedido>> findAllJson() {
 		List<Pedido> list = service.findAll();
 		return ResponseEntity.ok().body(list);
 	}
-
+	
+	@RequestMapping(value = "/xml", method = RequestMethod.GET, produces = MediaType.APPLICATION_XML_VALUE)
+	@ResponseBody
+	public ResponseEntity<List<Pedido>> findAllXml() {
+		List<Pedido> list = service.findAll();
+		return ResponseEntity.ok().body(list);
+	}
 }
