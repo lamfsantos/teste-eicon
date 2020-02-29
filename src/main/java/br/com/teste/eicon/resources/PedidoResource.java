@@ -24,18 +24,12 @@ import br.com.teste.eicon.services.PedidoService;
 
 @RestController
 @RequestMapping(value = "/pedidos")
-public class PedidoResourceJson {
+public class PedidoResource {
 	@Autowired
 	private PedidoService service;
 
-	@RequestMapping(value = "/json/{id}") 
-	@ResponseBody
-	public ResponseEntity<Pedido> findJson(@PathVariable Integer id) {
-		Pedido pedido = service.findExternal(id);
-		return ResponseEntity.ok().body(pedido);
-	}
-	
-	@RequestMapping(value = "/xml/{id}", produces = MediaType.APPLICATION_XML_VALUE) 
+	@RequestMapping(method = RequestMethod.GET, value = "/{id}", produces = { MediaType.APPLICATION_JSON_VALUE,
+			MediaType.APPLICATION_XML_VALUE })
 	@ResponseBody
 	public ResponseEntity<Pedido> findXml(@PathVariable Integer id) {
 		Pedido pedido = service.findExternal(id);
@@ -44,11 +38,10 @@ public class PedidoResourceJson {
 
 	@RequestMapping(method = RequestMethod.POST)
 	@ResponseBody
-	public ResponseEntity<List<String>> insert(
-			@Valid @RequestBody List<Pedido> pedidos) {
+	public ResponseEntity<List<String>> insert(@Valid @RequestBody List<Pedido> pedidos) {
 		List<String> response = new ArrayList<String>();
 
-		if(pedidos.size()>=1 && pedidos.size()<=10) {
+		if (pedidos.size() >= 1 && pedidos.size() <= 10) {
 			for (Pedido pedido : pedidos) {
 				if (service.find(pedido.getNumeroControle()) == null) {
 
@@ -78,25 +71,19 @@ public class PedidoResourceJson {
 					response.add("Pedido não cadastrado, Numero de Controle já cadastrado: " + pedido.toString());
 				}
 			}
-		}else if(pedidos.size()<1){
+		} else if (pedidos.size() < 1) {
 			response.add("Nenhum pedido cadastrado, o tamanho minimo da lista de pedidos é 1.");
-		}else {
+		} else {
 			response.add("Nenhum pedido cadastrado, o tamanho máximo da lista de pedidos é 10.");
 		}
-		
-		
+
 		return ResponseEntity.ok().body(response);
 	}
-	
-	@RequestMapping(value = "/json", method = RequestMethod.GET)
-	public ResponseEntity<List<Pedido>> findAllJson() {
-		List<Pedido> list = service.findAll();
-		return ResponseEntity.ok().body(list);
-	}
-	
-	@RequestMapping(value = "/xml", method = RequestMethod.GET, produces = MediaType.APPLICATION_XML_VALUE)
+
+	@RequestMapping(method = RequestMethod.GET, produces = { MediaType.APPLICATION_JSON_VALUE,
+			MediaType.APPLICATION_XML_VALUE })
 	@ResponseBody
-	public ResponseEntity<List<Pedido>> findAllXml() {
+	public ResponseEntity<List<Pedido>> findAll() {
 		List<Pedido> list = service.findAll();
 		return ResponseEntity.ok().body(list);
 	}
