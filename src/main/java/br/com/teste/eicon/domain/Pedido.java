@@ -7,6 +7,12 @@ import javax.persistence.Id;
 import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlRootElement;
 
+/*
+ * Classe mapeada usando o Hibernate para banco de dados, e a anotação 
+ * @XmlRootElement possibilita o mapeamento para XML
+ * 
+ */
+
 @Entity
 @XmlRootElement
 public class Pedido implements Serializable {
